@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var express = require('express');
 var bodyParser  = require("body-parser");
 var methodOverride = require("method-override");
+var argv = require('optimist').argv;
     http = require("http");
 var	cors = require('cors');
 var app = express();
@@ -14,15 +15,10 @@ var controllerUser = require('./controllers/controllerUser');
     app.use(bodyParser.urlencoded({ extended: false }));  
 	app.use(bodyParser.json());
 	app.use(methodOverride());
-
-var connect = mongoose.connect('mongodb://104.155.107.128:80/mydb', function(err,res){ 
-       console.log(err,res); 
-      if(res) { 
-        console.log('Connected!!!' );  
-      } else {
-     } 
-   });
-
+var connect = mongoose.connect('mongodb://' + argv.be_ip + ':80/boxoApp');
+// mongoose.connect('mongodb://104.155.107.128:80/mydb', function(err,res){ 
+    console.log(connect); 
+     
 var users = connect.model('BoxoUsers');
 
   app.get('/begin', function(req, res) {
@@ -46,6 +42,5 @@ var users = connect.model('BoxoUsers');
 
 //Declaración de módelos
 //var users = mongoose.model('BoxoUsers');
-app.listen(3000, function(){
-	console.log("Running server");
-})
+app.listen(3000, argv.fe_ip);
+console.log("Running server");
